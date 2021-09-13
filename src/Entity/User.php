@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -59,6 +61,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $userName;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Action::class, inversedBy="users")
+     */
+    private $action;
+
+    public function __construct()
+    {
+        $this->action = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -200,6 +212,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUserName(string $userName): self
     {
         $this->userName = $userName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getAction(): Collection
+    {
+        return $this->action;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->action->contains($action)) {
+            $this->action[] = $action;
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        $this->action->removeElement($action);
 
         return $this;
     }

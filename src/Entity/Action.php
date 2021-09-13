@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ActionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,6 +58,27 @@ class Action
      * @ORM\Column(type="string", length=255)
      */
     private $featured_image;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="actions")
+     */
+    private $categorie;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Blogpost::class, inversedBy="actions")
+     */
+    private $blogpost;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="action")
+     */
+    private $users;
+
+    public function __construct()
+    {
+        $this->categorie = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +177,69 @@ class Action
     public function setFeaturedImage(string $featured_image): self
     {
         $this->featured_image = $featured_image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategorie(): Collection
+    {
+        return $this->categorie;
+    }
+
+    public function addCategorie(Category $categorie): self
+    {
+        if (!$this->categorie->contains($categorie)) {
+            $this->categorie[] = $categorie;
+        }
+
+        return $this;
+    }
+
+    public function removeCategorie(Category $categorie): self
+    {
+        $this->categorie->removeElement($categorie);
+
+        return $this;
+    }
+
+    public function getBlogpost(): ?Blogpost
+    {
+        return $this->blogpost;
+    }
+
+    public function setBlogpost(?Blogpost $blogpost): self
+    {
+        $this->blogpost = $blogpost;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addAction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeAction($this);
+        }
 
         return $this;
     }
