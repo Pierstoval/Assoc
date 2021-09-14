@@ -59,6 +59,11 @@ class Comment
      */
     private $blogposts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Blogpost::class, inversedBy="comment")
+     */
+    private $blogpost;
+
     public function __construct()
     {
         $this->keyword = new ArrayCollection();
@@ -192,6 +197,18 @@ class Comment
                 $blogpost->setComment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBlogpost(): ?Blogpost
+    {
+        return $this->blogpost;
+    }
+
+    public function setBlogpost(?Blogpost $blogpost): self
+    {
+        $this->blogpost = $blogpost;
 
         return $this;
     }

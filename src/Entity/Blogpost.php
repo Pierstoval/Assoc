@@ -40,20 +40,21 @@ class Blogpost
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="blogposts")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="blogpost")
      */
     private $comment;
 
     /**
-     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="blogpost")
+     * @ORM\ManyToOne(targetEntity=Action::class, inversedBy="blogposts")
      */
-    private $actions;
+    private $action;
 
     public function __construct()
     {
-        $this->actions = new ArrayCollection();
+        $this->comment = new ArrayCollection();
     }
 
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -107,45 +108,46 @@ class Blogpost
         return $this;
     }
 
-    public function getComment(): ?Comment
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComment(): Collection
     {
         return $this->comment;
     }
 
-    public function setComment(?Comment $comment): self
+    public function addComment(Comment $comment): self
     {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Action[]
-     */
-    public function getActions(): Collection
-    {
-        return $this->actions;
-    }
-
-    public function addAction(Action $action): self
-    {
-        if (!$this->actions->contains($action)) {
-            $this->actions[] = $action;
-            $action->setBlogpost($this);
+        if (!$this->comment->contains($comment)) {
+            $this->comment[] = $comment;
+            $comment->setBlogpost($this);
         }
 
         return $this;
     }
 
-    public function removeAction(Action $action): self
+    public function removeComment(Comment $comment): self
     {
-        if ($this->actions->removeElement($action)) {
+        if ($this->comment->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($action->getBlogpost() === $this) {
-                $action->setBlogpost(null);
+            if ($comment->getBlogpost() === $this) {
+                $comment->setBlogpost(null);
             }
         }
 
         return $this;
     }
+
+    public function getAction(): ?Action
+    {
+        return $this->action;
+    }
+
+    public function setAction(?Action $action): self
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
 }
