@@ -58,6 +58,24 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
 
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[hash:8].[ext]'
+    })
+
+     // webpack.config.js
+    //  var webpack = require('webpack');
+
+    //  Encore
+     // ...
+            // .addPlugin(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+
+
+      // webpack.config.js
+        // Encore
+    // ...
+        //    .autoProvidejQuery();
+                        
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
 
@@ -69,7 +87,7 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     // uncomment if you're having problems with a jQuery plugin
-    //.autoProvidejQuery()
+    .autoProvidejQuery()
 ;
 
 module.exports = Encore.getWebpackConfig();

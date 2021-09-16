@@ -3,6 +3,7 @@
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/webpack-encore": "^1.0.0",
         "core-js": "^3.0.0",
+        "file-loader": "^6.0.0",
         "regenerator-runtime": "^0.13.2",
         "sass": "^1.40.1",
         "sass-loader": "^12.0.0",
@@ -18,8 +19,13 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "animate.css": "^4.1.1",
         "autoprefixer": "^10.3.4",
         "bootstrap": "^5.1.1",
-        "postcss-loader": "^6.1.1"
+        "counterup2": "^2.0.2",
+        "magnific-popup": "^1.1.0",
+        "popper.js": "^1.16.1",
+        "postcss-loader": "^6.1.1",
+        "slick-carousel": "^1.8.1"
     }
 }
