@@ -1,0 +1,94 @@
+
+ <!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+    <title>
+ {% block title %} Login {% endblock %} 
+    </title>
+    {% block stylesheets %}
+        {{encore_entry_link_tags ('app')}}
+    {% endblock %}
+ 
+ </head>
+ <body>
+     
+
+  <section class="login_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="detail-box">
+            <h3>
+              GET ONLINE COURSES FOR FREE
+            </h3>
+            <p>
+              Create your free account now and get immediate access to 100s of
+              online courses
+            </p>
+            <a href="">
+              REGISTER NOW
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="login_form">
+            <h5>
+              Login Now
+            </h5>
+      <form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% block javascripts %}
+   {{ encore_entry_script_tags ('app')}}
+  {% endblock %}
+   </body>
+</html>
