@@ -49,15 +49,6 @@ class Comment
      */
     private $active;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="comments")
-     */
-    private $keyword;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Blogpost::class, mappedBy="comment")
-     */
-    private $blogposts;
 
     /**
      * @ORM\ManyToOne(targetEntity=Blogpost::class, inversedBy="comment")
@@ -66,7 +57,7 @@ class Comment
 
     public function __construct()
     {
-        $this->keyword = new ArrayCollection();
+       
         $this->blogposts = new ArrayCollection();
     }
 
@@ -147,38 +138,8 @@ class Comment
         return $this;
     }
 
-    /**
-     * @return Collection|Keyword[]
-     */
-    public function getKeyword(): Collection
-    {
-        return $this->keyword;
-    }
-
-    public function addKeyword(Keyword $keyword): self
-    {
-        if (!$this->keyword->contains($keyword)) {
-            $this->keyword[] = $keyword;
-        }
-
-        return $this;
-    }
-
-    public function removeKeyword(Keyword $keyword): self
-    {
-        $this->keyword->removeElement($keyword);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Blogpost[]
-     */
-    public function getBlogposts(): Collection
-    {
-        return $this->blogposts;
-    }
-
+  
+   
     public function addBlogpost(Blogpost $blogpost): self
     {
         if (!$this->blogposts->contains($blogpost)) {

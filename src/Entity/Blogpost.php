@@ -39,11 +39,7 @@ class Blogpost
      */
     private $title;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="blogpost")
-     */
-    private $comment;
-
+  
     /**
      * @ORM\ManyToOne(targetEntity=Action::class, inversedBy="blogposts")
      */

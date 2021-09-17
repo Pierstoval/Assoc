@@ -74,16 +74,18 @@ class Action
      */
     private $users;
 
+
     /**
-     * @ORM\OneToMany(targetEntity=Blogpost::class, mappedBy="action")
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="action")
      */
-    private $blogposts;
+    private $categories;
 
     public function __construct()
     {
         $this->categorie = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->blogposts = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -275,6 +277,33 @@ class Action
             if ($blogpost->getAction() === $this) {
                 $blogpost->setAction(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addAction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeAction($this);
         }
 
         return $this;
