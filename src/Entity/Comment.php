@@ -45,28 +45,16 @@ class Comment
     private $created_at;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity=Action::class, inversedBy="comments")
      */
-    private $active;
+    private $action;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="comments")
-     */
-    private $keyword;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Blogpost::class, mappedBy="comment")
-     */
-    private $blogposts;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Blogpost::class, inversedBy="comment")
-     */
-    private $blogpost;
 
     public function __construct()
     {
-        $this->keyword = new ArrayCollection();
+       
         $this->blogposts = new ArrayCollection();
     }
 
@@ -135,81 +123,21 @@ class Comment
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getAction(): ?Action
     {
-        return $this->active;
+        return $this->action;
     }
 
-    public function setActive(bool $active): self
+    public function setAction(?Action $action): self
     {
-        $this->active = $active;
+        $this->action = $action;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Keyword[]
-     */
-    public function getKeyword(): Collection
-    {
-        return $this->keyword;
-    }
 
-    public function addKeyword(Keyword $keyword): self
-    {
-        if (!$this->keyword->contains($keyword)) {
-            $this->keyword[] = $keyword;
-        }
 
-        return $this;
-    }
-
-    public function removeKeyword(Keyword $keyword): self
-    {
-        $this->keyword->removeElement($keyword);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Blogpost[]
-     */
-    public function getBlogposts(): Collection
-    {
-        return $this->blogposts;
-    }
-
-    public function addBlogpost(Blogpost $blogpost): self
-    {
-        if (!$this->blogposts->contains($blogpost)) {
-            $this->blogposts[] = $blogpost;
-            $blogpost->setComment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBlogpost(Blogpost $blogpost): self
-    {
-        if ($this->blogposts->removeElement($blogpost)) {
-            // set the owning side to null (unless already changed)
-            if ($blogpost->getComment() === $this) {
-                $blogpost->setComment(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getBlogpost(): ?Blogpost
-    {
-        return $this->blogpost;
-    }
-
-    public function setBlogpost(?Blogpost $blogpost): self
-    {
-        $this->blogpost = $blogpost;
-
-        return $this;
-    }
+  
+   
+    
 }

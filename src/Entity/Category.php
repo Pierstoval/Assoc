@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -29,20 +30,25 @@ class Category
      */
     private $description;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Action::class, mappedBy="categorie")
-     */
-    private $actions;
+   
 
     /**
-     * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity=Action::class, inversedBy="categories")
      */
-    private $keyword;
+    private $action;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+   
 
     public function __construct()
     {
-        $this->actions = new ArrayCollection();
-        $this->keyword = new ArrayCollection();
+        
+        $this->action = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,23 +80,7 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|Action[]
-     */
-    public function getActions(): Collection
-    {
-        return $this->actions;
-    }
-
-    public function addAction(Action $action): self
-    {
-        if (!$this->actions->contains($action)) {
-            $this->actions[] = $action;
-            $action->addCategorie($this);
-        }
-
-        return $this;
-    }
+   
 
     public function removeAction(Action $action): self
     {
@@ -101,27 +91,32 @@ class Category
         return $this;
     }
 
+
     /**
-     * @return Collection|Keyword[]
+     * @return Collection|Action[]
      */
-    public function getKeyword(): Collection
+    public function getAction(): Collection
     {
-        return $this->keyword;
+        return $this->action;
     }
 
-    public function addKeyword(Keyword $keyword): self
+    public function addAction(Action $action): self
     {
-        if (!$this->keyword->contains($keyword)) {
-            $this->keyword[] = $keyword;
+        if (!$this->action->contains($action)) {
+            $this->action[] = $action;
         }
 
         return $this;
     }
 
-    public function removeKeyword(Keyword $keyword): self
+    public function getSlug(): ?string
     {
-        $this->keyword->removeElement($keyword);
-
-        return $this;
+        return $this->slug;
     }
+
+    
+
+   
+
+   
 }
