@@ -6,6 +6,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
@@ -36,9 +37,17 @@ class Category
      */
     private $action;
 
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
+   
+
     public function __construct()
     {
-        $this->actions = new ArrayCollection();
+        
         $this->action = new ArrayCollection();
     }
 
@@ -99,4 +108,15 @@ class Category
 
         return $this;
     }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    
+
+   
+
+   
 }

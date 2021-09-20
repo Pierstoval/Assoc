@@ -42,7 +42,7 @@ class CategoryFixtures extends Fixture
                 $category = new Category();
                 $category->setName($value['name']);
                 $category->setDescription($value['description']);
-                $category->setAction($action);
+                $category->addAction($action);
                 $manager->persist($category);
 
                 //Enregistrer la categorie dans une reference
@@ -54,15 +54,18 @@ class CategoryFixtures extends Fixture
                 
             $manager->flush();
         }
-    //     public function getDependencies()
-    // {
-    //     return[
-    //         ActionFixtures::class
+        public function getDependencies()
+    {
+        return[
+            ActionFixtures::class,
+           
+            
+
            
 
 
-    //     ];
-    // }
+        ];
+    }
            
 
         

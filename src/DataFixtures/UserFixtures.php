@@ -11,7 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture 
 {   
     private $encoder;
     public function __construct(UserPasswordEncoderInterface $encoder)
@@ -46,4 +46,13 @@ class UserFixtures extends Fixture
 
         $manager->flush();
     }
+    // public function getDependencies()
+    // {
+    //     return[
+           
+            
+
+
+    //     ];
+    // }
 }

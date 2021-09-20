@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Comment;
+use App\Entity\Action;
 use App\Entity\Keyword;
 use App\Entity\Blogpost;
 use App\Entity\Category;
@@ -20,7 +21,8 @@ class CommentFixtures extends Fixture
         $faker = Factory::create('fr_FR');
         // COMMENT
         for ($nbComment=0 ; $nbComment <5; $nbComment++) {
-            $blogpost =$this->getReference('blogpost_'. $faker->numberBetween(1, 10));
+            $action =$this->getReference('action_'. $faker->numberBetween(1, 10));
+
             
 
             $comment = new Comment();
@@ -28,8 +30,8 @@ class CommentFixtures extends Fixture
                 ->setContent($faker->word())
                 ->setCreatedAt($faker->dateTimeBetween('-6 month', 'now'))
                 ->setContent($faker->word())
-                ->setBlogpost($blogpost);
-            // ->setSlug($faker->slug(3));
+                ->setAction($action)
+                ->setSlug($faker->slug(3));
             $this->addReference('comment_' . $nbComment, $comment);
     
             $manager->persist($comment);
@@ -39,13 +41,5 @@ class CommentFixtures extends Fixture
 
         $manager->flush();
     }
-    // public function getDependencies()
-    // {
-    //     return[
-    //         BlogpostFixtures::class,
-    //         KeywordFixtures::class
-
-
-    //     ];
-    // }
+  
 }
