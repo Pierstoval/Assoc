@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BlogpostRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * @ORM\Entity(repositoryClass=BlogpostRepository::class)
@@ -39,13 +38,11 @@ class Blogpost
      */
     private $title;
 
-  
     /**
      * @ORM\ManyToOne(targetEntity=Action::class, inversedBy="blogposts")
      */
     private $action;
 
-  
     public function getId(): ?int
     {
         return $this->id;
@@ -54,13 +51,6 @@ class Blogpost
     public function getSlug(): ?string
     {
         return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
-
-        return $this;
     }
 
     public function getFile(): ?string
@@ -95,6 +85,9 @@ class Blogpost
     public function setTitle(string $title): self
     {
         $this->title = $title;
+        if (!$this->slug) {
+            $this->slug = (new AsciiSlugger())->slug($title);
+        }
 
         return $this;
     }

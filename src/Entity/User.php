@@ -63,13 +63,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $userName;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Action::class, inversedBy="users")
+     * @var array|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity=Action::class, mappedBy="creators", cascade={"persist"})
      */
-    private $action;
+    private $createdActions;
 
     public function __construct()
     {
-        $this->action = new ArrayCollection();
+        $this->createdActions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,15 +221,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|Action[]
      */
-    public function getAction(): Collection
+    public function getCreatedActions(): Collection
     {
-        return $this->action;
+        return $this->createdActions;
     }
 
     public function addAction(Action $action): self
     {
-        if (!$this->action->contains($action)) {
-            $this->action[] = $action;
+        if (!$this->createdActions->contains($action)) {
+            $this->createdActions[] = $action;
         }
 
         return $this;
@@ -235,7 +237,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeAction(Action $action): self
     {
-        $this->action->removeElement($action);
+        $this->createdActions->removeElement($action);
 
         return $this;
     }

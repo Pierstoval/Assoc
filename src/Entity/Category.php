@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -30,26 +28,11 @@ class Category
      */
     private $description;
 
-   
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Action::class, inversedBy="categories")
-     */
-    private $action;
-
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
-
-   
-
-    public function __construct()
-    {
-        
-        $this->action = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -80,43 +63,9 @@ class Category
         return $this;
     }
 
-   
-
-    public function removeAction(Action $action): self
-    {
-        if ($this->actions->removeElement($action)) {
-            $action->removeCategorie($this);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * @return Collection|Action[]
-     */
-    public function getAction(): Collection
-    {
-        return $this->action;
-    }
-
-    public function addAction(Action $action): self
-    {
-        if (!$this->action->contains($action)) {
-            $this->action[] = $action;
-        }
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    
-
-   
-
-   
 }

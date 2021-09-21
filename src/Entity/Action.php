@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ActionRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 
 /**
@@ -62,23 +62,17 @@ class Action
     private $featured_image;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="actions")
+     * @ORM\OneToMany(targetEntity=Blogpost::class, mappedBy="actions")
      */
-    private $categorie;
+    private $mentionedByBlogposts;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Blogpost::class, inversedBy="actions")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="createdActions")
      */
-    private $blogpost;
+    private $creators;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="action")
-     */
-    private $users;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="action")
+     * @ORM\ManyToMany(targetEntity=Category::class)
      */
     private $categories;
 
@@ -90,8 +84,8 @@ class Action
     public function __construct()
     {
         $this->categorie = new ArrayCollection();
-        $this->users = new ArrayCollection();
-        $this->blogposts = new ArrayCollection();
+        $this->creators = new ArrayCollection();
+        $this->mentionedByBlogposts = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
@@ -125,24 +119,24 @@ class Action
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeInterface $created_at): self
+    public function setCreatedAt(DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdtatedAt(): ?\DateTimeInterface
+    public function getUpdtatedAt(): ?DateTimeInterface
     {
         return $this->updtated_at;
     }
 
-    public function setUpdtatedAt(\DateTimeInterface $updtated_at): self
+    public function setUpdtatedAt(DateTimeInterface $updtated_at): self
     {
         $this->updtated_at = $updtated_at;
 
@@ -221,14 +215,14 @@ class Action
         return $this;
     }
 
-    public function getBlogpost(): ?Blogpost
+    public function getMentionedByBlogposts(): ArrayCollection
     {
-        return $this->blogpost;
+        return $this->mentionedByBlogposts;
     }
 
-    public function setBlogpost(?Blogpost $blogpost): self
+    public function setMentionedByBlogposts(ArrayCollection $blogposts): self
     {
-        $this->blogpost = $blogpost;
+        $this->mentionedByBlogposts = $blogposts;
 
         return $this;
     }
@@ -236,15 +230,15 @@ class Action
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getCreators(): Collection
     {
-        return $this->users;
+        return $this->creators;
     }
 
     public function addUser(User $user): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
+        if (!$this->creators->contains($user)) {
+            $this->creators[] = $user;
             $user->addAction($this);
         }
 
@@ -253,25 +247,17 @@ class Action
 
     public function removeUser(User $user): self
     {
-        if ($this->users->removeElement($user)) {
+        if ($this->creators->removeElement($user)) {
             $user->removeAction($this);
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Blogpost[]
-     */
-    public function getBlogposts(): Collection
-    {
-        return $this->blogposts;
-    }
-
     public function addBlogpost(Blogpost $blogpost): self
     {
-        if (!$this->blogposts->contains($blogpost)) {
-            $this->blogposts[] = $blogpost;
+        if (!$this->mentionedByBlogposts->contains($blogpost)) {
+            $this->mentionedByBlogposts[] = $blogpost;
             $blogpost->setAction($this);
         }
 
@@ -280,7 +266,7 @@ class Action
 
     public function removeBlogpost(Blogpost $blogpost): self
     {
-        if ($this->blogposts->removeElement($blogpost)) {
+        if ($this->mentionedByBlogposts->removeElement($blogpost)) {
             // set the owning side to null (unless already changed)
             if ($blogpost->getAction() === $this) {
                 $blogpost->setAction(null);
@@ -302,7 +288,6 @@ class Action
     {
         if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
-            $category->addAction($this);
         }
 
         return $this;
@@ -310,10 +295,6 @@ class Action
 
     public function removeCategory(Category $category): self
     {
-        if ($this->categories->removeElement($category)) {
-            $category->removeAction($this);
-        }
-
         return $this;
     }
 

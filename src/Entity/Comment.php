@@ -35,7 +35,7 @@ class Comment
     private $rgpd;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=User::class)
      */
     private $author;
 
@@ -49,12 +49,9 @@ class Comment
      */
     private $action;
 
-
-
-
     public function __construct()
     {
-       
+
         $this->blogposts = new ArrayCollection();
     }
 
@@ -137,7 +134,7 @@ class Comment
 
 
 
-  
-   
-    
+
+
+
 }
