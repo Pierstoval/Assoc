@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ActionController extends AbstractController
 {
     /**
-     * @Route("/action", name="action_on")
+     * @Route("/action", name="action")
      */
     public function actions(ActionRepository $actionRepository,
     PaginatorInterface $paginator,
