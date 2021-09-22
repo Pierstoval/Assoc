@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+        {% for blogpost in blogposts %}
+            
+                <div class="col-lg-4">
+                    <div class="card bg-transparent">
+                        <i class="fas fa-home fa-2x"></i>
+                        <h4 class="py-2">{{blogpost.file}}</h4>
+                        <p class="para-light">{{blogpost.file}}</p>
+
+                        <div class="my-3">
+                            {# <a  class="btn" href="{{path('actualites_detail', {'slug':blogpost.slug})}}"></a> #}
+                         </div>                   
+                        
+                    </div>
+        {% endfor %}
+                </div>
+                <div>
+                    {% do blogposts.setPageRange(2) %}
+                    {{knp_pagination_render(blogposts, 'base/pagination.html.twig')}}
+                </div>
+                   
+              
+              
+        </div> <!-- end of container -->    
+
+{% endblock %}

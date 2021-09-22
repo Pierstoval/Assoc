@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ActionController!{% endblock %}
+
+{% block body %}
+
+    <!-- event section -->
+  <section class="event_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h3>
+          Events
+        </h3>
+        <p>
+          Upcoming  Action.
+        </p>
+      </div>
+      <div class="event_container">
+      {% for action in actions %}
+        <div class="box">
+          <div class="img-box">
+            <img src="{{ asset('../../build/images/event-img.d6e6b9f2.jpg') }}" alt=""alt="" />
+          </div>
+          
+          <div class="detail-box">
+            <h4>
+                 {{action.title}}
+            </h4>
+
+            <h6>
+              {{action.updtatedAt|date("m/d/Y")}} VENICE, ITALY
+            </h6>
+          </div>
+          <div class="date-box">
+            <h3>
+              <span>
+                15
+              </span>
+              March
+            </h3>
+          </div>
+          
+        </div>
+{% endfor %}
+
+      
+      <div class="btn-box">
+        <a href="">
+          Read More
+        </a>
+      </div>
+    </div>
+     {% do actions.setPageRange(2) %}
+                    {{knp_pagination_render(actions, 'base/pagination.html.twig')}}
+  </section>
+   {% endblock %}
+
