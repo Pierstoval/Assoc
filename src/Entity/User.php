@@ -6,11 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -68,6 +70,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToMany(targetEntity=Action::class, mappedBy="creators", cascade={"persist"})
      */
     private $createdActions;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerifed;
 
     public function __construct()
     {
@@ -238,6 +245,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeAction(Action $action): self
     {
         $this->createdActions->removeElement($action);
+
+        return $this;
+    }
+
+    public function getIsVerifed(): ?bool
+    {
+        return $this->isVerifed;
+    }
+
+    public function setIsVerifed(bool $isVerifed): self
+    {
+        $this->isVerifed = $isVerifed;
 
         return $this;
     }

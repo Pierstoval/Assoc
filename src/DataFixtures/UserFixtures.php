@@ -38,7 +38,8 @@ class UserFixtures extends Fixture
             $user->setFirstName($faker->firstName());
             $user->setLastName($faker->lastName());
             $user->setPhoneNumber($faker->phoneNumber());
-            $user->setAPropos($faker->text());
+            $user->setLastName($faker->lastName());
+            $user->setIsVerifed($faker->boolean());
 
             $manager->persist($user);
 
