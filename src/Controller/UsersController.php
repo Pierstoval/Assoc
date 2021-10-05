@@ -26,7 +26,7 @@ class UsersController extends AbstractController
         ]);
     }
     /**
-     * @Route("/user/actions/add", name="user/actions_ad")
+     * @Route("/user/actions/add", name="useractions_ad")
      */
     public function addAction(Request $request)
     {   
