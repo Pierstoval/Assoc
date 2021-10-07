@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Action;
 use App\Entity\Category;
+use App\Form\ActionsType;
 use App\Repository\ActionRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +34,17 @@ class ActionController extends AbstractController
         ]);
     }
      /**
+     * @Route("/action/{slug}", name="action_show")
+     */
+    public function actionShow(ActionRepository $actionRepository,
+    Request $request): Response
+    {
+        
+        return $this->render('action/actions-show.html.twig', [
+            'actions' => $actionRepository->findAll(),
+        ]);
+    }
+     /**
      * @Route("/bestactions", name="action_details_category")
      */
     public function details(CategoryRepository $categoryRepository,
@@ -50,6 +65,44 @@ class ActionController extends AbstractController
         return $this->render('action/category.html.twig', [
             'categorie' => $categorie,
             'actions' => $actions,
+        ]);
+    }
+
+    /**
+     * @Route("/action/new", name="create_action")
+     * @Route("/action/{id}/edit", name="action_edit")
+     */
+    public function createAction(Action $action = null, Request $request, EntityManagerInterface $manager,
+        ActionRepository $actionRepository)
+
+    {
+        if(!$action){
+
+            $action = new Action();
+        }
+         // creates a action object and initializes some data for this example
+         $form = $this->createForm(ActionsType::class, $action);
+         $form->handleRequest($request);
+         
+         if($form->isSubmitted() && $form->isValid()){
+             if(!$action->getId()){
+                 $action->setCreatedAt(new \DateTime());
+
+             }
+             $manager->persist($action);
+             $manager->flush();
+
+             return $this->redirectToRoute('action', ['id'=> $action->getId()
+
+                ]);
+           
+               
+
+         }
+        return $this->render('action/action-form.html.twig', [
+           
+          'form'=> $form->createView(),
+          'editMode'=> $action->getId() !== null
         ]);
     }
 }

@@ -30,7 +30,7 @@ class ActionsType extends AbstractType
                 'choice_label' => 'name',
                 'mapped' => false
             ])
-            ->add('Valider', SubmitType::class)
+          
         ;
     }
 
