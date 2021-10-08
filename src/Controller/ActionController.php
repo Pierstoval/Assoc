@@ -7,7 +7,6 @@ use App\Entity\Category;
 use App\Form\ActionsType;
 use App\Repository\ActionRepository;
 use App\Repository\CategoryRepository;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ActionController extends AbstractController
 {
     /**
-     * @Route("/action", name="action")
+     * @Route("/actions", name="action")
      */
     public function actions(ActionRepository $actionRepository,
     PaginatorInterface $paginator,
@@ -34,16 +33,27 @@ class ActionController extends AbstractController
         ]);
     }
      /**
-     * @Route("/action/{slug}", name="action_show")
+     * @Route("/actions/{id}", name="actions_show", methods={"GET","POST"})
      */
-    public function actionShow(ActionRepository $actionRepository,
-    Request $request): Response
-    {
-        
-        return $this->render('action/actions-show.html.twig', [
-            'actions' => $actionRepository->findAll(),
-        ]);
-    }
+    // public function actionShow(Action $actions, ActionRepository $actionRepository,
+    // Request $request): Response
+    // {
+    //     return $this->redirectToRoute('action', ['id'=> $actions->getId()]);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+
+    //         $form->setCreatedAt(new \DateTime())
+    //                 ->setExperience($experience);
+    //         $manager->persist($comment);
+          
+    //         $manager->flush();
+
+    
+    //     return $this->render('action/actions-show.html.twig', [
+            
+    //         'actions' => $actionRepository->findAll(),
+    //     ]);    
+    // }
+    
      /**
      * @Route("/bestactions", name="action_details_category")
      */
