@@ -26,13 +26,17 @@
             <h4>
                  {{action.title}}
             </h4>
+              {# <h4>
+                 {{action.categories[name]}}
+            </h4> #}
               
-            <a class="nav-link" href="">  Details de l´action</a>
+            <a class="nav-link" href="{{path('actions_show',{'id':action.id})}}">  Details de l´action</a>
               
 
             <h6>
               {{action.updtatedAt|date("m/d/Y")}} VENICE, ITALY
             </h6>
+
           </div>
           <div class="date-box">
             <h3>

@@ -12,14 +12,19 @@
           
           <div class="detail-box">
             <h4>
-                 {{action.title}}
+                 {{actions.title}}
             </h4>
-              
+            <h4>
+                 {# {{dump(actions.creators.firstName)}} #}
+            </h4>
+                <h4>
+                 guest :{{actions.guest}} nb de guest :{{actions.guest|length}}
+            </h4> 
             <a class="nav-link" href="{{path('action')}}">  Details de l´action</a>
               
 
             <h6>
-              {{action.updtatedAt|date("m/d/Y")}} VENICE, ITALY
+              {{actions.updtatedAt|date("m/d/Y")}} VENICE, ITALY
             </h6>
           </div>
           <div class="date-box">
@@ -30,7 +35,31 @@
               March
             </h3>
           </div>
+
+
           
+        </div>
+        <div>
+          <h1>Comentaire</h1>
+            {# {% for actions.comment  in actions.comment %}
+           
+            {% endfor %} #}
+            <pre>
+              {# {{ dump(actions.comment) }} #}
+                {# {{ dump(comment.content) }}
+                   {{ dump(comment.author) }} #}
+            </pre>
+         {% if app.user %}
+         {{ form_start(commentForm)}}
+         {# {{ form_row(commentForm.author,{'attr':{'placeholder':"votre nom"}})}} #}
+          {{ form_row(commentForm.content,{'attr':{'placeholder':"votre nom"}})}}
+          <button type="submit" class="btn btn-sucess">Commentez</button>
+          {{ form_end(commentForm)}}
+
+        {% else %}
+          <h2>ola</h2>
+        {% endif %}
+
         </div>
 
 

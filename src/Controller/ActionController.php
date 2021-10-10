@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Action;
+use App\Entity\Comment;
 use App\Entity\Category;
 use App\Form\ActionsType;
+use App\Form\CommentType;
 use App\Repository\ActionRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,28 +35,37 @@ class ActionController extends AbstractController
             'actions' => $actions,
         ]);
     }
+   
      /**
-     * @Route("/actions/{id}", name="actions_show", methods={"GET","POST"})
+     * @Route("/actions/{id}", name="actions_show")
      */
-    // public function actionShow(Action $actions, ActionRepository $actionRepository,
-    // Request $request): Response
-    // {
-    //     return $this->redirectToRoute('action', ['id'=> $actions->getId()]);
-    //     if ($form->isSubmitted() && $form->isValid()) {
 
-    //         $form->setCreatedAt(new \DateTime())
-    //                 ->setExperience($experience);
-    //         $manager->persist($comment);
+        public function actionShow(Action $actions, ActionRepository $actionRepository,
+        Request $request, EntityManagerInterface $manager)
+        {
+            $comment =new Comment();
+            $form = $this->createForm(CommentType::class, $comment);
+            $form->handleRequest($request);
+
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $comment->setCreatedAt(new \DateTime())
+                        ->setAction($actions);
+                $manager->persist($comment);
           
-    //         $manager->flush();
+                $manager->flush();
+                return $this->redirectToRoute('actions_show',['id'=> $actions->getId()]);
+           }
 
-    
-    //     return $this->render('action/actions-show.html.twig', [
             
-    //         'actions' => $actionRepository->findAll(),
-    //     ]);    
-    // }
-    
+                return $this->render('action/actions-show.html.twig', [
+                
+                'actions' => $actions,
+                // 'comment' => $comment,
+                'commentForm' =>$form->createView()
+            ]);
+            
+        }
      /**
      * @Route("/bestactions", name="action_details_category")
      */
@@ -109,7 +121,7 @@ class ActionController extends AbstractController
                
 
          }
-        return $this->render('action/action-form.html.twig', [
+        return $this->render('action/add.html.twig', [
            
           'form'=> $form->createView(),
           'editMode'=> $action->getId() !== null
