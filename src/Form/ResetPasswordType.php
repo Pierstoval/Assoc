@@ -22,7 +22,7 @@ class ResetPasswordType extends AbstractType
 
         ))
 
-        ->add('password', RepeatedType::class, array(
+        ->add('newPassword', RepeatedType::class, array(
 
             'type' => PasswordType::class,
 
@@ -37,6 +37,7 @@ class ResetPasswordType extends AbstractType
                 )
 
             ),
+            'mapped' => false,
 
             'required' => true,
 
@@ -53,12 +54,5 @@ class ResetPasswordType extends AbstractType
         ))
 
     ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
     }
 }
